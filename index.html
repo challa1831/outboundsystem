@@ -1,0 +1,1134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QApilot · Outbound Lead Generation Flow</title>
+<meta name="description" content="QApilot's outbound lead generation flow — interactive end-to-end map with recommended tool stack.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* ===== QApilot design tokens ===== */
+  :root {
+    --qp-navy-50:#F4F6FB; --qp-navy-100:#E4E9F4; --qp-navy-300:#A8B2D1;
+    --qp-navy-500:#3A4977; --qp-navy-700:#1B2A57; --qp-navy-900:#0F1B3D;
+    --qp-blue-50:#EEF2FF; --qp-blue-100:#DBEAFE; --qp-blue-200:#BFDBFE;
+    --qp-blue-500:#2563EB; --qp-blue-700:#1D4ED8; --qp-blue-900:#1E3A8A;
+    --qp-teal-500:#0284C7; --qp-teal-50:#F0F9FF; --qp-teal-100:#E0F2FE; --qp-teal-900:#0C4A6E;
+    --qp-green-50:#ECFDF5; --qp-green-500:#10B981; --qp-green-700:#047857; --qp-green-900:#064E3B;
+    --qp-amber-50:#FEF3C7; --qp-amber-200:#FDE68A; --qp-amber-500:#D97706; --qp-amber-700:#B45309; --qp-amber-900:#78350F;
+    --qp-red-50:#FEF2F2; --qp-red-100:#FEE2E2; --qp-red-500:#DC2626; --qp-red-700:#B91C1C; --qp-red-900:#7F1D1D;
+    --qp-gray-25:#FAFBFC; --qp-gray-50:#F8FAFC; --qp-gray-100:#F1F5F9;
+    --qp-gray-200:#E2E8F0; --qp-gray-300:#CBD5E1; --qp-gray-500:#64748B; --qp-gray-700:#334155; --qp-gray-800:#1E293B;
+    --space-2:4px; --space-3:8px; --space-4:12px; --space-5:16px; --space-6:20px;
+    --space-7:24px; --space-8:32px; --space-9:40px; --space-10:48px; --space-12:64px;
+    --radius-md:6px; --radius-lg:8px; --radius-xl:12px; --radius-pill:9999px;
+    --font-sans:"Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
+    --font-mono:"JetBrains Mono", ui-monospace, monospace;
+    --tracking-wide:0.08em;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin:0; padding:0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--font-sans);
+    font-feature-settings: "tnum" 1;
+    color: var(--qp-gray-800);
+    background: var(--qp-gray-50);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .header {
+    background: var(--qp-navy-900);
+    color: #fff;
+    padding: var(--space-7) var(--space-8);
+    border-bottom: 4px solid var(--qp-blue-500);
+  }
+  .header-inner {
+    max-width: 1440px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between; gap: var(--space-6);
+  }
+  .wordmark { font-weight: 800; font-size: 18px; letter-spacing: -0.01em; color:#fff; }
+  .wordmark .dot { color: var(--qp-blue-500); }
+  .eyebrow {
+    font-size: 11px; font-weight: 600; letter-spacing: var(--tracking-wide);
+    text-transform: uppercase; color: var(--qp-navy-300);
+  }
+
+  .hero {
+    background: #fff;
+    padding: var(--space-10) var(--space-8) var(--space-8);
+    border-bottom: 1px solid var(--qp-gray-200);
+  }
+  .hero-inner { max-width: 1440px; margin: 0 auto; }
+  .hero .eyebrow { color: var(--qp-blue-700); margin-bottom: var(--space-3); }
+  .hero h1 {
+    font-size: 36px; line-height: 44px; font-weight: 800;
+    color: var(--qp-navy-900);
+    margin: 0 0 var(--space-4); letter-spacing: -0.01em;
+  }
+  .hero p.lede {
+    font-size: 16px; color: var(--qp-gray-700); max-width: 820px; margin: 0;
+  }
+  .meta {
+    display: flex; flex-wrap: wrap; gap: var(--space-6); margin-top: var(--space-6);
+    font-size: 13px; color: var(--qp-gray-500);
+  }
+  .meta strong { color: var(--qp-gray-800); font-weight: 600; }
+
+  main { max-width: 1440px; margin: 0 auto; padding: var(--space-10) var(--space-8); }
+  section { margin-bottom: var(--space-12); }
+  section h2 {
+    font-size: 24px; line-height: 32px; font-weight: 700;
+    color: var(--qp-navy-900);
+    margin: 0 0 var(--space-3); letter-spacing: -0.005em;
+  }
+  section .section-eyebrow {
+    font-size: 12px; font-weight: 600; letter-spacing: var(--tracking-wide);
+    text-transform: uppercase; color: var(--qp-gray-500);
+    margin-bottom: var(--space-2);
+  }
+  section p { font-size: 15px; color: var(--qp-gray-700); margin: 0 0 var(--space-5); max-width: 880px; }
+
+  /* ===== Tour controls ===== */
+  .tour-bar {
+    display: flex; align-items: center; gap: var(--space-4);
+    background: #fff;
+    border: 1px solid var(--qp-gray-200);
+    border-radius: var(--radius-xl);
+    padding: var(--space-4) var(--space-5);
+    margin-bottom: var(--space-5);
+    flex-wrap: wrap;
+  }
+  .tour-bar .label {
+    font-size: 11px; font-weight: 600; letter-spacing: var(--tracking-wide);
+    text-transform: uppercase; color: var(--qp-gray-500); margin-right: var(--space-2);
+  }
+  .tour-bar .hint {
+    font-size: 12px; color: var(--qp-gray-500);
+  }
+  .btn {
+    appearance: none; border: 1px solid var(--qp-gray-300); background: #fff;
+    color: var(--qp-gray-800); font-family: inherit; font-size: 13px; font-weight: 600;
+    padding: 8px 14px; border-radius: var(--radius-md); cursor: pointer;
+    display: inline-flex; align-items: center; gap: 6px;
+    transition: all 0.15s ease;
+  }
+  .btn:hover { border-color: var(--qp-blue-500); color: var(--qp-blue-700); }
+  .btn.primary { background: var(--qp-blue-500); color: #fff; border-color: var(--qp-blue-500); }
+  .btn.primary:hover { background: var(--qp-blue-700); border-color: var(--qp-blue-700); color: #fff; }
+  .btn.primary.playing { background: var(--qp-red-500); border-color: var(--qp-red-500); }
+  .btn.primary.playing:hover { background: var(--qp-red-700); border-color: var(--qp-red-700); }
+  .tour-status {
+    font-size: 12px; color: var(--qp-gray-500); margin-left: auto;
+    font-family: var(--font-mono);
+  }
+  .tour-status .count { color: var(--qp-blue-700); font-weight: 600; }
+
+  /* ===== Diagram card ===== */
+  .diagram-card {
+    background: #fff;
+    border: 1px solid var(--qp-gray-200);
+    border-radius: var(--radius-xl);
+    padding: var(--space-8);
+    overflow: hidden;
+    position: relative;
+  }
+  .diagram-card svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  /* ===== Stage interactivity ===== */
+  .stage {
+    cursor: pointer;
+    transition: filter 0.2s ease, opacity 0.2s ease;
+  }
+  .stage:hover {
+    filter: brightness(1.03) drop-shadow(0 4px 10px rgba(15,27,61,0.12));
+  }
+  .stage.active {
+    filter: drop-shadow(0 4px 14px rgba(37,99,235,0.3));
+  }
+  .stage rect, .stage polygon {
+    transition: stroke 0.2s ease, stroke-width 0.2s ease;
+  }
+  .stage:hover > rect:first-of-type,
+  .stage:hover > polygon:first-of-type {
+    stroke: var(--qp-blue-500);
+  }
+  .stage.active > rect:first-of-type,
+  .stage.active > polygon:first-of-type {
+    stroke: var(--qp-blue-500);
+    stroke-width: 2.5;
+  }
+  .stage .active-ring {
+    fill: none;
+    stroke: var(--qp-blue-500);
+    stroke-width: 2;
+    opacity: 0;
+  }
+  .stage.active .active-ring {
+    opacity: 0.5;
+    animation: ringPulse 1.8s ease-in-out infinite;
+  }
+  @keyframes ringPulse {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.7; }
+  }
+
+  /* ===== Anchored callout ===== */
+  .callout {
+    position: absolute;
+    width: 320px;
+    background: #fff;
+    border: 1px solid var(--qp-gray-200);
+    border-radius: var(--radius-xl);
+    box-shadow: 0 10px 30px rgba(15,27,61,0.12), 0 2px 6px rgba(15,27,61,0.06);
+    padding: var(--space-5) var(--space-6) var(--space-6);
+    z-index: 10;
+    opacity: 0;
+    pointer-events: none;
+    transform: translate(0, 0);
+    transition:
+      opacity 0.2s ease,
+      top 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+      left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .callout.show {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .callout .c-eyebrow {
+    font-size: 11px; font-weight: 600; letter-spacing: var(--tracking-wide);
+    text-transform: uppercase; color: var(--qp-blue-700);
+    margin-bottom: var(--space-2); display: block;
+  }
+  .callout h3 {
+    font-size: 16px; font-weight: 700; color: var(--qp-navy-900);
+    margin: 0 0 var(--space-3); line-height: 22px;
+  }
+  .callout p {
+    font-size: 13px; line-height: 19px; color: var(--qp-gray-700);
+    margin: 0 0 var(--space-4); max-width: none;
+  }
+  .callout .section-label {
+    font-size: 10px; font-weight: 600; letter-spacing: var(--tracking-wide);
+    text-transform: uppercase; color: var(--qp-gray-500);
+    margin-bottom: 6px;
+  }
+  .callout-tools {
+    display: flex; flex-wrap: wrap; gap: 4px;
+    margin-bottom: var(--space-4);
+  }
+  .callout-tools .tname {
+    font-family: var(--font-mono); font-weight: 500; font-size: 10px;
+    background: var(--qp-blue-50); color: var(--qp-blue-700);
+    border: 1px solid var(--qp-blue-200);
+    border-radius: var(--radius-pill);
+    padding: 2px 8px;
+    white-space: nowrap;
+  }
+  .callout .tip {
+    font-size: 11px; line-height: 16px;
+    background: var(--qp-amber-50);
+    border-left: 3px solid var(--qp-amber-500);
+    color: var(--qp-amber-900);
+    border-radius: 4px;
+    padding: 8px 10px;
+  }
+  .callout .tip strong { font-weight: 700; }
+
+  /* Pointer arrow (rotated square pseudo-element) */
+  .callout::before {
+    content: '';
+    position: absolute;
+    width: 12px; height: 12px;
+    background: #fff;
+    border: 1px solid var(--qp-gray-200);
+    transform: rotate(45deg);
+    transition: top 0.4s cubic-bezier(0.4, 0, 0.2, 1), left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .callout[data-side="right"]::before {
+    left: -7px;
+    top: var(--arrow-y, 30px);
+    border-right: none;
+    border-top: none;
+  }
+  .callout[data-side="left"]::before {
+    right: -7px;
+    top: var(--arrow-y, 30px);
+    border-left: none;
+    border-bottom: none;
+  }
+  .callout[data-side="below"]::before {
+    bottom: -7px;
+    left: var(--arrow-x, 50%);
+    margin-left: -6px;
+    border-left: none;
+    border-top: none;
+  }
+  .callout[data-side="above"]::before {
+    top: -7px;
+    left: var(--arrow-x, 50%);
+    margin-left: -6px;
+    border-right: none;
+    border-bottom: none;
+  }
+
+  /* Helper hint (when nothing is active) */
+  .callout-hint {
+    text-align: center;
+    color: var(--qp-gray-500);
+    font-size: 13px;
+    line-height: 19px;
+  }
+  .callout-hint .pulse-dot {
+    display: inline-block; width: 10px; height: 10px;
+    background: var(--qp-blue-500); border-radius: 50%;
+    margin-right: 6px; vertical-align: middle;
+    animation: pulse 1.6s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 0.4; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.3); }
+  }
+
+  /* ===== Stack table ===== */
+  .stack-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: #fff;
+    border: 1px solid var(--qp-gray-200);
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    margin-top: var(--space-5);
+  }
+  .stack-table thead th {
+    text-align: left;
+    font-size: 11px; font-weight: 600; letter-spacing: var(--tracking-wide); text-transform: uppercase;
+    color: var(--qp-gray-500);
+    background: var(--qp-gray-50);
+    padding: var(--space-4) var(--space-6);
+    border-bottom: 1px solid var(--qp-gray-200);
+  }
+  .stack-table tbody td {
+    font-size: 13px; color: var(--qp-gray-700);
+    padding: var(--space-5) var(--space-6);
+    border-bottom: 1px solid var(--qp-gray-100);
+    vertical-align: top;
+  }
+  .stack-table tbody tr:last-child td { border-bottom: none; }
+  .stack-table tbody td:first-child {
+    font-weight: 600; color: var(--qp-navy-900);
+    white-space: nowrap;
+  }
+  .stack-table .pick {
+    display: inline-block;
+    font-family: var(--font-mono); font-size: 11px;
+    background: var(--qp-blue-50); color: var(--qp-blue-700);
+    border: 1px solid var(--qp-blue-200);
+    border-radius: var(--radius-pill);
+    padding: 2px 8px;
+    margin-right: 4px; margin-bottom: 4px;
+  }
+  .stack-table .alt {
+    display: inline-block;
+    font-family: var(--font-mono); font-size: 11px;
+    background: var(--qp-gray-100); color: var(--qp-gray-700);
+    border: 1px solid var(--qp-gray-200);
+    border-radius: var(--radius-pill);
+    padding: 2px 8px;
+    margin-right: 4px; margin-bottom: 4px;
+  }
+
+  .verdict {
+    background: var(--qp-navy-900);
+    color: #fff;
+    border-radius: var(--radius-xl);
+    padding: var(--space-7) var(--space-8);
+    margin-top: var(--space-6);
+  }
+  .verdict .eyebrow { color: var(--qp-navy-300); margin-bottom: var(--space-3); }
+  .verdict h3 {
+    font-size: 18px; font-weight: 700; color: #fff;
+    margin: 0 0 var(--space-3);
+  }
+  .verdict p {
+    color: var(--qp-navy-300); font-size: 14px; margin: 0; max-width: none;
+  }
+  .verdict .cost {
+    display: inline-block;
+    font-family: var(--font-mono); font-size: 12px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: var(--radius-pill);
+    padding: 4px 10px;
+    color: #fff;
+    margin-top: var(--space-4);
+  }
+
+  .footer {
+    border-top: 1px solid var(--qp-gray-200);
+    padding: var(--space-7) var(--space-8);
+    margin-top: var(--space-10);
+    background: #fff;
+  }
+  .footer-inner {
+    max-width: 1440px; margin: 0 auto;
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 12px; color: var(--qp-gray-500);
+  }
+  .footer a { color: var(--qp-blue-700); text-decoration: none; font-weight: 500; }
+  .footer a:hover { text-decoration: underline; }
+
+  /* ===== Mobile fallback ===== */
+  @media (max-width: 900px) {
+    .callout {
+      position: relative !important;
+      top: auto !important;
+      left: auto !important;
+      width: 100% !important;
+      margin-bottom: var(--space-6);
+      box-shadow: none;
+      transform: none !important;
+      transition: opacity 0.2s ease;
+    }
+    .callout::before { display: none; }
+    .callout:not(.show) { display: none; }
+  }
+  @media (max-width: 720px) {
+    .header, .hero, main, .footer { padding-left: var(--space-5); padding-right: var(--space-5); }
+    .hero h1 { font-size: 28px; line-height: 36px; }
+    .meta { flex-direction: column; gap: var(--space-3); }
+    .footer-inner { flex-direction: column; align-items: flex-start; gap: var(--space-3); }
+    .tour-bar { flex-direction: column; align-items: stretch; }
+    .tour-bar .tour-status { margin-left: 0; text-align: left; }
+    .diagram-card { padding: var(--space-5); overflow-x: auto; }
+    .diagram-card svg { min-width: 880px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .stage.active .active-ring { animation: none; }
+    .callout-hint .pulse-dot { animation: none; }
+    .callout, .callout::before { transition: opacity 0.15s ease !important; }
+    html { scroll-behavior: auto; }
+  }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-inner">
+    <div class="wordmark">QApilot<span class="dot">.</span></div>
+    <div class="eyebrow">Lead Mapping · Outbound flow</div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow">Outbound playbook</div>
+    <h1>Outbound Lead Generation — end-to-end flow</h1>
+    <p class="lede">Hover any stage to inspect it. Click to pin. Use <strong>Play tour</strong> to walk the funnel automatically — the detail card follows the highlighted stage.</p>
+    <div class="meta">
+      <span><strong>Owner:</strong> QApilot GTM</span>
+      <span><strong>Stage:</strong> seed · partner-led GTM · USA</span>
+      <span><strong>Updated:</strong> 17 May 2026</span>
+    </div>
+  </div>
+</section>
+
+<main>
+
+  <section>
+    <div class="tour-bar">
+      <span class="label">Walk the flow</span>
+      <button class="btn primary" id="tourBtn" type="button">▶ Play tour</button>
+      <button class="btn" id="resetBtn" type="button">↺ Reset</button>
+      <span class="hint">Hover to preview · click to pin</span>
+      <span class="tour-status" id="tourStatus">stage <span class="count">—</span> / 13</span>
+    </div>
+
+    <div class="diagram-card" id="diagramCard">
+      <svg id="flowSvg" viewBox="0 0 1100 1340" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t d" font-family="Inter, ui-sans-serif, system-ui, -apple-system, sans-serif">
+        <title id="t">QApilot outbound lead flow — interactive</title>
+        <desc id="d">Hypothesis to weekly retro. Hover or click any stage for tools and details.</desc>
+        <defs>
+          <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#475569"/></marker>
+          <marker id="arrHot" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#047857"/></marker>
+          <marker id="arrNavy" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0F1B3D"/></marker>
+          <style>
+            text { pointer-events: none; }
+            .num { font-size: 11px; font-weight: 700; fill: #FFFFFF; }
+            .title { font-size: 14px; font-weight: 600; fill: #0F1B3D; }
+            .mini { font-size: 12px; font-weight: 500; }
+          </style>
+        </defs>
+
+        <rect width="1100" height="1340" fill="#FFFFFF"/>
+
+        <!-- 1: Hypothesis -->
+        <g class="stage" data-stage="hypothesis" tabindex="0">
+          <rect x="390" y="30" width="320" height="56" rx="10" fill="#FFFFFF" stroke="#0F1B3D" stroke-width="1.5"/>
+          <circle cx="412" cy="52" r="13" fill="#0F1B3D"/>
+          <text x="412" y="56" text-anchor="middle" class="num">1</text>
+          <text x="560" y="62" text-anchor="middle" class="title">Marketing hypothesis</text>
+          <rect class="active-ring" x="386" y="26" width="328" height="64" rx="12"/>
+        </g>
+
+        <line x1="550" y1="86" x2="550" y2="118" stroke="#475569" stroke-width="1.5" marker-end="url(#arr)"/>
+
+        <rect x="450" y="118" width="200" height="28" rx="6" fill="#F1F5F9" stroke="#CBD5E1" stroke-width="1"/>
+        <text x="550" y="137" text-anchor="middle" fill="#475569" class="mini">Classify lead bucket</text>
+
+        <path d="M550 146 L550 170 L180 170 L180 192" stroke="#475569" stroke-width="1.5" fill="none" marker-end="url(#arr)"/>
+        <path d="M550 146 L550 170 L920 170 L920 192" stroke="#475569" stroke-width="1.5" fill="none" marker-end="url(#arr)"/>
+
+        <!-- 2A: Partners -->
+        <g class="stage" data-stage="partners" tabindex="0">
+          <rect x="80" y="192" width="200" height="56" rx="10" fill="#FFFFFF" stroke="#0F1B3D" stroke-width="1.5"/>
+          <circle cx="102" cy="214" r="13" fill="#0F1B3D"/>
+          <text x="102" y="218" text-anchor="middle" class="num">2A</text>
+          <text x="200" y="224" text-anchor="middle" class="title">Partners</text>
+          <rect class="active-ring" x="76" y="188" width="208" height="64" rx="12"/>
+        </g>
+
+        <!-- 2B: End customers -->
+        <g class="stage" data-stage="endcustomers" tabindex="0">
+          <rect x="820" y="192" width="200" height="56" rx="10" fill="#FFFFFF" stroke="#0F1B3D" stroke-width="1.5"/>
+          <circle cx="842" cy="214" r="13" fill="#0F1B3D"/>
+          <text x="842" y="218" text-anchor="middle" class="num">2B</text>
+          <text x="940" y="224" text-anchor="middle" class="title">End customers</text>
+          <rect class="active-ring" x="816" y="188" width="208" height="64" rx="12"/>
+        </g>
+
+        <path d="M180 248 L180 278 L550 278 L550 302" stroke="#475569" stroke-width="1.5" fill="none" marker-end="url(#arr)"/>
+        <path d="M920 248 L920 278 L550 278" stroke="#475569" stroke-width="1.5" fill="none"/>
+
+        <!-- 3: App analysis -->
+        <g class="stage" data-stage="app-analysis" tabindex="0">
+          <rect x="390" y="302" width="320" height="56" rx="10" fill="#FFFFFF" stroke="#0F1B3D" stroke-width="1.5"/>
+          <circle cx="412" cy="324" r="13" fill="#0F1B3D"/>
+          <text x="412" y="328" text-anchor="middle" class="num">3</text>
+          <text x="560" y="334" text-anchor="middle" class="title">Analyse mobile apps</text>
+          <rect class="active-ring" x="386" y="298" width="328" height="64" rx="12"/>
+        </g>
+
+        <line x1="550" y1="358" x2="550" y2="390" stroke="#475569" stroke-width="1.5" marker-end="url(#arr)"/>
+
+        <!-- 4: Verdict -->
+        <g class="stage" data-stage="verdict" tabindex="0">
+          <polygon points="550,390 660,455 550,520 440,455" fill="#FFFFFF" stroke="#0F1B3D" stroke-width="1.5"/>
+          <circle cx="550" cy="425" r="13" fill="#0F1B3D"/>
+          <text x="550" y="429" text-anchor="middle" class="num">4</text>
+          <text x="550" y="473" text-anchor="middle" class="title">Verdict?</text>
+          <polygon class="active-ring" points="550,382 668,455 550,528 432,455" fill="none"/>
+        </g>
+
+        <line x1="550" y1="520" x2="550" y2="540" stroke="#475569" stroke-width="1.5"/>
+        <line x1="435" y1="540" x2="665" y2="540" stroke="#475569" stroke-width="1.5"/>
+        <line x1="435" y1="540" x2="435" y2="552" stroke="#D97706" stroke-width="1.5"/>
+        <line x1="550" y1="540" x2="550" y2="552" stroke="#047857" stroke-width="2" marker-end="url(#arrHot)"/>
+        <line x1="665" y1="540" x2="665" y2="552" stroke="#94A3B8" stroke-width="1.5"/>
+
+        <rect x="395" y="552" width="80" height="24" rx="12" fill="#FEF3C7" stroke="#D97706" stroke-width="1.5"/>
+        <text x="435" y="569" text-anchor="middle" fill="#92400E" font-size="11" font-weight="700">WARM</text>
+        <text x="435" y="592" text-anchor="middle" fill="#92400E" font-size="10">LinkedIn nurture</text>
+
+        <rect x="510" y="552" width="80" height="24" rx="12" fill="#ECFDF5" stroke="#10B981" stroke-width="1.5"/>
+        <text x="550" y="569" text-anchor="middle" fill="#065F46" font-size="11" font-weight="700">HOT</text>
+
+        <rect x="625" y="552" width="80" height="24" rx="12" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.5"/>
+        <text x="665" y="569" text-anchor="middle" fill="#475569" font-size="11" font-weight="700">COLD</text>
+        <text x="665" y="592" text-anchor="middle" fill="#475569" font-size="10">re-score in 30d</text>
+
+        <line x1="550" y1="576" x2="550" y2="610" stroke="#047857" stroke-width="2" marker-end="url(#arrHot)"/>
+
+        <!-- 5: Identify -->
+        <g class="stage" data-stage="identify-targets" tabindex="0">
+          <rect x="390" y="610" width="320" height="56" rx="10" fill="#FFFFFF" stroke="#0F1B3D" stroke-width="1.5"/>
+          <circle cx="412" cy="632" r="13" fill="#0F1B3D"/>
+          <text x="412" y="636" text-anchor="middle" class="num">5</text>
+          <text x="560" y="642" text-anchor="middle" class="title">Identify target individuals</text>
+          <rect class="active-ring" x="386" y="606" width="328" height="64" rx="12"/>
+        </g>
+
+        <line x1="550" y1="666" x2="550" y2="698" stroke="#475569" stroke-width="1.5" marker-end="url(#arr)"/>
+
+        <!-- 6: Enrich -->
+        <g class="stage" data-stage="enrich" tabindex="0">
+          <rect x="390" y="698" width="320" height="56" rx="10" fill="#FFFFFF" stroke="#0F1B3D" stroke-width="1.5"/>
+          <circle cx="412" cy="720" r="13" fill="#0F1B3D"/>
+          <text x="412" y="724" text-anchor="middle" class="num">6</text>
+          <text x="560" y="730" text-anchor="middle" class="title">Append + verify emails</text>
+          <rect class="active-ring" x="386" y="694" width="328" height="64" rx="12"/>
+        </g>
+
+        <path d="M550 754 L550 780 L260 780 L260 802" stroke="#475569" stroke-width="1.5" fill="none" marker-end="url(#arr)"/>
+        <path d="M550 754 L550 780 L840 780 L840 802" stroke="#475569" stroke-width="1.5" fill="none" marker-end="url(#arr)"/>
+
+        <!-- 7a: Suppression -->
+        <g class="stage" data-stage="suppression" tabindex="0">
+          <rect x="80" y="802" width="360" height="56" rx="10" fill="#FEF3C7" stroke="#D97706" stroke-width="1.5"/>
+          <circle cx="102" cy="824" r="13" fill="#D97706"/>
+          <text x="102" y="828" text-anchor="middle" class="num">7a</text>
+          <text x="270" y="834" text-anchor="middle" fill="#78350F" class="title">Suppression &amp; dedupe</text>
+          <rect class="active-ring" x="76" y="798" width="368" height="64" rx="12"/>
+        </g>
+
+        <!-- 7b: Asset -->
+        <g class="stage" data-stage="asset-prep" tabindex="0">
+          <rect x="660" y="802" width="360" height="56" rx="10" fill="#F0F9FF" stroke="#0284C7" stroke-width="1.5"/>
+          <circle cx="682" cy="824" r="13" fill="#0284C7"/>
+          <text x="682" y="828" text-anchor="middle" class="num">7b</text>
+          <text x="850" y="834" text-anchor="middle" fill="#0C4A6E" class="title">Sector → CoWork demo</text>
+          <rect class="active-ring" x="656" y="798" width="368" height="64" rx="12"/>
+        </g>
+
+        <path d="M260 858 L260 888 L550 888 L550 910" stroke="#475569" stroke-width="1.5" fill="none" marker-end="url(#arr)"/>
+        <path d="M840 858 L840 888 L550 888" stroke="#475569" stroke-width="1.5" fill="none"/>
+
+        <!-- 8: Preflight -->
+        <g class="stage" data-stage="preflight" tabindex="0">
+          <rect x="390" y="910" width="320" height="56" rx="10" fill="#FEF2F2" stroke="#DC2626" stroke-width="1.5"/>
+          <circle cx="412" cy="932" r="13" fill="#DC2626"/>
+          <text x="412" y="936" text-anchor="middle" class="num">8</text>
+          <text x="560" y="942" text-anchor="middle" fill="#7F1D1D" class="title">Deliverability preflight</text>
+          <rect class="active-ring" x="386" y="906" width="328" height="64" rx="12"/>
+        </g>
+
+        <line x1="550" y1="966" x2="550" y2="998" stroke="#475569" stroke-width="1.5" marker-end="url(#arr)"/>
+
+        <!-- 9: Sequence -->
+        <text x="40" y="993" fill="#0F1B3D" font-size="11" font-weight="700" letter-spacing="1.5">9 · 5-TOUCH SEQUENCE · DAY 1 → 13</text>
+
+        <g class="stage" data-stage="sequence" tabindex="0">
+          <rect x="40" y="1000" width="180" height="50" rx="8" fill="#FFFFFF" stroke="#0F1B3D" stroke-width="1.5"/>
+          <text x="130" y="1020" text-anchor="middle" fill="#1D4ED8" font-size="10" font-weight="700" letter-spacing="1">DAY 1 · EMAIL</text>
+          <text x="130" y="1040" text-anchor="middle" fill="#0F1B3D" font-size="12" font-weight="600">Intro</text>
+
+          <line x1="220" y1="1025" x2="250" y2="1025" stroke="#475569" stroke-width="1.5" marker-end="url(#arr)"/>
+
+          <rect x="250" y="1000" width="180" height="50" rx="8" fill="#FFFFFF" stroke="#0F1B3D" stroke-width="1.5"/>
+          <text x="340" y="1020" text-anchor="middle" fill="#075985" font-size="10" font-weight="700" letter-spacing="1">DAY 3 · LINKEDIN</text>
+          <text x="340" y="1040" text-anchor="middle" fill="#0F1B3D" font-size="12" font-weight="600">Connect</text>
+
+          <line x1="430" y1="1025" x2="460" y2="1025" stroke="#475569" stroke-width="1.5" marker-end="url(#arr)"/>
+
+          <rect x="460" y="1000" width="180" height="50" rx="8" fill="#FFFFFF" stroke="#0F1B3D" stroke-width="1.5"/>
+          <text x="550" y="1020" text-anchor="middle" fill="#1D4ED8" font-size="10" font-weight="700" letter-spacing="1">DAY 6 · EMAIL</text>
+          <text x="550" y="1040" text-anchor="middle" fill="#0F1B3D" font-size="12" font-weight="600">Proof</text>
+
+          <line x1="640" y1="1025" x2="670" y2="1025" stroke="#475569" stroke-width="1.5" marker-end="url(#arr)"/>
+
+          <rect x="670" y="1000" width="180" height="50" rx="8" fill="#FFFFFF" stroke="#0F1B3D" stroke-width="1.5"/>
+          <text x="760" y="1020" text-anchor="middle" fill="#075985" font-size="10" font-weight="700" letter-spacing="1">DAY 9 · LINKEDIN</text>
+          <text x="760" y="1040" text-anchor="middle" fill="#0F1B3D" font-size="12" font-weight="600">Share teardown</text>
+
+          <line x1="850" y1="1025" x2="880" y2="1025" stroke="#475569" stroke-width="1.5" marker-end="url(#arr)"/>
+
+          <rect x="880" y="1000" width="180" height="50" rx="8" fill="#FFFFFF" stroke="#0F1B3D" stroke-width="1.5"/>
+          <text x="970" y="1020" text-anchor="middle" fill="#1D4ED8" font-size="10" font-weight="700" letter-spacing="1">DAY 13 · EMAIL</text>
+          <text x="970" y="1040" text-anchor="middle" fill="#0F1B3D" font-size="12" font-weight="600">Break-up</text>
+
+          <rect class="active-ring" x="34" y="994" width="1032" height="62" rx="12"/>
+        </g>
+
+        <line x1="550" y1="1056" x2="550" y2="1088" stroke="#475569" stroke-width="1.5" marker-end="url(#arr)"/>
+
+        <!-- 10: Reply router -->
+        <g class="stage" data-stage="reply-router" tabindex="0">
+          <rect x="390" y="1088" width="320" height="56" rx="10" fill="#FFFFFF" stroke="#0F1B3D" stroke-width="1.5"/>
+          <circle cx="412" cy="1110" r="13" fill="#0F1B3D"/>
+          <text x="412" y="1114" text-anchor="middle" class="num">10</text>
+          <text x="560" y="1120" text-anchor="middle" class="title">Classify reply</text>
+          <rect class="active-ring" x="386" y="1084" width="328" height="64" rx="12"/>
+        </g>
+
+        <line x1="550" y1="1144" x2="550" y2="1166" stroke="#475569" stroke-width="1.5"/>
+        <line x1="130" y1="1166" x2="970" y2="1166" stroke="#475569" stroke-width="1.5"/>
+        <line x1="130" y1="1166" x2="130" y2="1182" stroke="#10B981" stroke-width="1.5" marker-end="url(#arrHot)"/>
+        <line x1="340" y1="1166" x2="340" y2="1182" stroke="#10B981" stroke-width="1.5" marker-end="url(#arrHot)"/>
+        <line x1="550" y1="1166" x2="550" y2="1182" stroke="#D97706" stroke-width="1.5"/>
+        <line x1="760" y1="1166" x2="760" y2="1182" stroke="#94A3B8" stroke-width="1.5"/>
+        <line x1="970" y1="1166" x2="970" y2="1182" stroke="#DC2626" stroke-width="1.5"/>
+
+        <g class="stage" data-stage="outcome-positive" tabindex="0">
+          <rect x="40" y="1182" width="180" height="50" rx="8" fill="#ECFDF5" stroke="#10B981" stroke-width="1.5"/>
+          <text x="130" y="1202" text-anchor="middle" fill="#065F46" font-size="10" font-weight="700" letter-spacing="1">POSITIVE</text>
+          <text x="130" y="1222" text-anchor="middle" fill="#064E3B" font-size="12" font-weight="600">Book meeting</text>
+          <rect class="active-ring" x="34" y="1176" width="192" height="62" rx="12"/>
+        </g>
+
+        <g class="stage" data-stage="outcome-referral" tabindex="0">
+          <rect x="250" y="1182" width="180" height="50" rx="8" fill="#ECFDF5" stroke="#10B981" stroke-width="1.5"/>
+          <text x="340" y="1202" text-anchor="middle" fill="#065F46" font-size="10" font-weight="700" letter-spacing="1">REFERRAL</text>
+          <text x="340" y="1222" text-anchor="middle" fill="#064E3B" font-size="12" font-weight="600">Route to AE</text>
+          <rect class="active-ring" x="244" y="1176" width="192" height="62" rx="12"/>
+        </g>
+
+        <g class="stage" data-stage="outcome-notnow" tabindex="0">
+          <rect x="460" y="1182" width="180" height="50" rx="8" fill="#FEF3C7" stroke="#D97706" stroke-width="1.5"/>
+          <text x="550" y="1202" text-anchor="middle" fill="#92400E" font-size="10" font-weight="700" letter-spacing="1">NOT NOW</text>
+          <text x="550" y="1222" text-anchor="middle" fill="#78350F" font-size="12" font-weight="600">Nurture queue</text>
+          <rect class="active-ring" x="454" y="1176" width="192" height="62" rx="12"/>
+        </g>
+
+        <g class="stage" data-stage="outcome-ooo" tabindex="0">
+          <rect x="670" y="1182" width="180" height="50" rx="8" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.5"/>
+          <text x="760" y="1202" text-anchor="middle" fill="#475569" font-size="10" font-weight="700" letter-spacing="1">OUT OF OFFICE</text>
+          <text x="760" y="1222" text-anchor="middle" fill="#1E293B" font-size="12" font-weight="600">Snooze 14d</text>
+          <rect class="active-ring" x="664" y="1176" width="192" height="62" rx="12"/>
+        </g>
+
+        <g class="stage" data-stage="outcome-unsub" tabindex="0">
+          <rect x="880" y="1182" width="180" height="50" rx="8" fill="#FEF2F2" stroke="#DC2626" stroke-width="1.5"/>
+          <text x="970" y="1202" text-anchor="middle" fill="#991B1B" font-size="10" font-weight="700" letter-spacing="1">UNSUBSCRIBE</text>
+          <text x="970" y="1222" text-anchor="middle" fill="#7F1D1D" font-size="12" font-weight="600">Suppression</text>
+          <rect class="active-ring" x="874" y="1176" width="192" height="62" rx="12"/>
+        </g>
+
+        <!-- 11: Feedback -->
+        <g class="stage" data-stage="feedback" tabindex="0">
+          <rect x="370" y="1265" width="360" height="50" rx="25" fill="#0F1B3D"/>
+          <circle cx="396" cy="1290" r="13" fill="#FFFFFF"/>
+          <text x="396" y="1294" text-anchor="middle" fill="#0F1B3D" font-size="11" font-weight="700">11</text>
+          <text x="565" y="1295" text-anchor="middle" fill="#FFFFFF" font-size="13" font-weight="600">Weekly retro → refines hypothesis</text>
+          <rect class="active-ring" x="366" y="1261" width="368" height="58" rx="29"/>
+        </g>
+
+        <path d="M1060 1207 Q 1080 1207 1080 850 Q 1080 825 460 825" stroke="#DC2626" stroke-width="1.5" stroke-dasharray="5 4" fill="none" marker-end="url(#arr)" opacity="0.45"/>
+      </svg>
+
+      <!-- ===== Anchored callout (positioned by JS) ===== -->
+      <div class="callout" id="callout" data-side="right" aria-live="polite">
+        <div class="callout-hint">
+          <span class="pulse-dot"></span>
+          Hover or click any numbered stage to see what happens there.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-eyebrow">Tool stack</div>
+    <h2>Recommended stack for seed-stage QApilot</h2>
+    <p>Blue chips are the recommended primary, gray chips are alternatives. Hover the diagram above to see how each stage maps to these tools.</p>
+
+    <table class="stack-table">
+      <thead>
+        <tr>
+          <th style="width:22%">Stage</th>
+          <th style="width:38%">Recommended</th>
+          <th>Why this over alternatives</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Sourcing</td><td><span class="pick">Apollo</span><span class="pick">Clay</span><span class="alt">ZoomInfo</span></td><td>Apollo for the contact database and basic sequencer; Clay for waterfall enrichment and dedupe logic. Skip ZoomInfo until pipeline justifies the price.</td></tr>
+        <tr><td>App signal</td><td><span class="pick">data.ai</span><span class="pick">Sensor Tower</span><span class="pick">QApilot skill</span></td><td>Free tiers cover crash and rating trends. The QApilot skill does the proprietary work — you own the app-quality angle, no one else does.</td></tr>
+        <tr><td>Email sequencing</td><td><span class="pick">Smartlead</span><span class="alt">Lemlist</span><span class="alt">Apollo built-in</span></td><td>Smartlead rotates across multiple sending inboxes (critical at scale) and has the best native warm-up at this price.</td></tr>
+        <tr><td>Sending domain</td><td><span class="pick">qapilot-mail.com (separate)</span><span class="alt">qapilot.io (do not use)</span></td><td>Run cold outbound from a sibling domain so a deliverability hit doesn't burn the apex domain your product runs on.</td></tr>
+        <tr><td>Warm-up</td><td><span class="pick">Mailreach</span><span class="alt">Lemwarm</span><span class="alt">Warmup Inbox</span></td><td>Most reliable warm-up monitoring; pair with Google Postmaster Tools for free domain reputation tracking.</td></tr>
+        <tr><td>LinkedIn outreach</td><td><span class="pick">Heyreach</span><span class="pick">LinkedIn Sales Navigator</span><span class="alt">Expandi</span></td><td>Heyreach is the safest option (less likely to get flagged) and supports rotating across multiple seats once a partner SDR is added.</td></tr>
+        <tr><td>Asset capture</td><td><span class="pick">Tella</span><span class="alt">Loom</span><span class="alt">Arcade</span></td><td>Tella's click-zoom and built-in trimming produce sharper sub-30-second product walkthroughs than Loom.</td></tr>
+        <tr><td>CRM &amp; suppression</td><td><span class="pick">HubSpot (free tier)</span><span class="alt">Salesforce</span></td><td>HubSpot free covers contacts, deals, suppression lists and basic sequences. Don't pay for Salesforce until 3+ sellers.</td></tr>
+        <tr><td>Meeting booking</td><td><span class="pick">Calendly</span><span class="alt">Cal.com</span><span class="alt">Chili Piper</span></td><td>Calendly is fine. Chili Piper is overkill until round-robin AEs exist.</td></tr>
+        <tr><td>Analytics &amp; retro</td><td><span class="pick">Looker Studio</span><span class="pick">Notion retro template</span><span class="alt">Mixpanel</span></td><td>Looker Studio (free) reading HubSpot + Smartlead via Zapier/n8n. Templated weekly Notion retro beats a fancy dashboard nobody opens.</td></tr>
+      </tbody>
+    </table>
+
+    <div class="verdict">
+      <div class="eyebrow">Bottom line</div>
+      <h3>Run this lean: ~$400–800/mo all-in.</h3>
+      <p>At target volume of ~200 prospects/week and ~50 sends/day per inbox, this stack covers everything from sourcing through reply routing. Add tools as the pipeline justifies the spend, not before.</p>
+      <div class="cost">est. $400–800 / month · seed stage</div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div>QApilot · Lead Mapping · outbound flow · 17 May 2026</div>
+    <div><a href="https://qapilot.io">qapilot.io</a></div>
+  </div>
+</footer>
+
+<script>
+  const stageData = {
+    'hypothesis': {
+      eyebrow: 'Step 1 · Input',
+      title: 'Marketing hypothesis',
+      desc: 'Marketing names one specific, testable hypothesis per cycle. Example: mobile-first fintech apps with declining App Store ratings buy QApilot CoWork. The weekly retro marks it confirmed or refuted.',
+      tools: ['Notion', 'Confluence', 'Retro doc'],
+      tip: 'One hypothesis per cycle. Vague hypotheses produce vague leads.'
+    },
+    'partners': {
+      eyebrow: 'Bucket A',
+      title: 'Partners',
+      desc: 'Mobile app dev shops, QA consultancies, system integrators, managed-testing agencies whose clients fit the hypothesis. One partner relationship = multi-account leverage.',
+      tools: ['LinkedIn Sales Nav', 'Crunchbase', 'G2'],
+      tip: 'Partners close slower but compound. Prioritise this bucket if you only have one outbound seat.'
+    },
+    'endcustomers': {
+      eyebrow: 'Bucket B',
+      title: 'End customers',
+      desc: 'Companies that build the mobile apps directly — QA leaders, eng managers, heads of mobile. Direct sales, smaller average contract value than a channel partner.',
+      tools: ['Apollo', 'Clay', 'data.ai', 'BuiltWith'],
+      tip: 'Filter by app-store presence first. A company without a mobile app is a wrong-fit lead.'
+    },
+    'app-analysis': {
+      eyebrow: 'Step 3 · QApilot skill',
+      title: 'Analyse mobile apps',
+      desc: 'The Lead Qualification skill pulls App Store + Play Store data and runs heuristics on crash signals, rating trends, review themes, and QA-team signals to produce a Hot/Warm/Cold verdict.',
+      tools: ['QApilot skill', 'data.ai', 'Sensor Tower', 'App Store', 'Play Store'],
+      tip: 'This is your unique edge. Most outbound scores by firmographics; you score by product quality.'
+    },
+    'verdict': {
+      eyebrow: 'Step 4 · Decision',
+      title: 'Verdict gate (three-way)',
+      desc: 'Hot leads enter the email sequence. Warm leads route to a LinkedIn-only light-touch lane. Cold leads drop to a 30-day re-score queue. Binary Hot / not-Hot wastes warm intent.',
+      tools: ['QApilot scoring', 'HubSpot lists'],
+      tip: 'A useful Warm rate is 25–40% of qualified leads. If everything is Hot, your bar is too low.'
+    },
+    'identify-targets': {
+      eyebrow: 'Step 5 · Extract',
+      title: 'Identify target individuals',
+      desc: 'For each Hot account, pull 1–3 named contacts — typically Head of QA, Head of Mobile, VP Engineering. Avoid blasting the whole company; single-contact targeting outperforms.',
+      tools: ['Apollo', 'LinkedIn Sales Nav', 'Clay', 'PhantomBuster'],
+      tip: 'Cap at 3 contacts per account. Going wider triggers internal "we are being spammed" alerts.'
+    },
+    'enrich': {
+      eyebrow: 'Step 6 · Enrich',
+      title: 'Append + verify emails',
+      desc: 'Find a verified work email for each target. Use a waterfall (Apollo first, fall back to Findymail, then Hunter), verify with NeverBounce or ZeroBounce to keep bounce rate under 1%.',
+      tools: ['Clay waterfall', 'Findymail', 'Hunter', 'NeverBounce', 'ZeroBounce'],
+      tip: 'Bounce >1% torpedoes sender reputation. Always verify; never trust raw enrichment.'
+    },
+    'suppression': {
+      eyebrow: 'Step 7a · Guardrail',
+      title: 'Suppression & dedupe',
+      desc: 'Strip contacts already in CRM (prior touches, existing opportunities, opt-outs). Cross-reference Buckets A and B to catch people in both. Apply global suppression list.',
+      tools: ['HubSpot', 'Salesforce', 'Smartlead list', 'Clay dedupe'],
+      tip: 'Emailing someone twice in a week from "two campaigns" is the fastest way to lose them.'
+    },
+    'asset-prep': {
+      eyebrow: 'Step 7b · Asset prep',
+      title: 'Sector → CoWork demo',
+      desc: 'Look up the lead\'s sector (fintech, e-commerce, gaming, ride-hail) and pull the matching CoWork demo GIF or short video. Shows CoWork solving a problem typical for that vertical.',
+      tools: ['Tella', 'Loom', 'Arcade', 'Notion', 'Hippo Video'],
+      tip: 'Build the library once. 8–10 sector clips cover ~80% of qualified leads.'
+    },
+    'preflight': {
+      eyebrow: 'Step 8 · Preflight',
+      title: 'Deliverability infrastructure',
+      desc: 'Verify sending infrastructure before any send: separate sending domain, SPF + DKIM + DMARC, active warm-up, bounce <1%, daily volume capped. Skip this and your apex domain reputation is gone.',
+      tools: ['Mailreach', 'Lemwarm', 'Warmup Inbox', 'GlockApps', 'G. Postmaster'],
+      tip: 'Use qapilot-mail.com or getqapilot.com as the sending domain. Never run cold outbound from qapilot.io.'
+    },
+    'sequence': {
+      eyebrow: 'Step 9 · Five-touch cadence',
+      title: 'Multi-channel sequence',
+      desc: 'Five touches over 13 days alternating email and LinkedIn. Day 1 email intro with CoWork demo, Day 3 LinkedIn connect, Day 6 email proof, Day 9 LinkedIn DM with QApilot teardown, Day 13 email break-up.',
+      tools: ['Smartlead', 'Lemlist', 'Heyreach', 'LaGrowthMachine'],
+      tip: 'Don\'t add a 6th touch. Past 5 it\'s harassment, not persistence.'
+    },
+    'reply-router': {
+      eyebrow: 'Step 10 · Router',
+      title: 'Classify reply',
+      desc: 'Classify every reply: Positive (book meeting), Referral (route to AE), Not now (drop to nurture), OOO (snooze 14d), Negative/Unsubscribe (suppression). Sequencer AI handles ~80%; human reviews the rest.',
+      tools: ['Smartlead AI', 'Lemlist AI', 'HubSpot AI'],
+      tip: 'OOO replies are not failures. Snooze and re-attempt; conversion rate on re-attempt is comparable to first touch.'
+    },
+    'outcome-positive': {
+      eyebrow: 'Reply outcome',
+      title: 'Positive · book meeting',
+      desc: 'Reply indicates interest. Route to the booking page; AE owns the next step. Time-to-meeting is the single best leading indicator of close rate — optimise this handoff for speed (<5 min).',
+      tools: ['Chili Piper', 'Calendly', 'Cal.com'],
+      tip: 'Send the booking link in the AI-drafted reply, not in a follow-up. Two-step handoff loses 30–50% of positive replies.'
+    },
+    'outcome-referral': {
+      eyebrow: 'Reply outcome',
+      title: 'Referral · route to AE',
+      desc: 'Reply names someone else as the right contact. Treat as a warm intro — alert the AE in Slack and create a HubSpot task with the original thread attached.',
+      tools: ['Slack alert', 'HubSpot task'],
+      tip: 'Always thank the referrer and let them know you reached out. Closes the loop and they\'ll do it again.'
+    },
+    'outcome-notnow': {
+      eyebrow: 'Reply outcome',
+      title: 'Not now · nurture',
+      desc: 'Genuine interest but bad timing. Drop into a slower nurture cadence — quarterly product update, occasional case study. Most "not now" replies in B2B convert within 90–180 days.',
+      tools: ['HubSpot', 'Marketo'],
+      tip: 'Tag the specific reason ("budget Q3", "in pilot with competitor") so the nurture content can be relevant.'
+    },
+    'outcome-ooo': {
+      eyebrow: 'Reply outcome',
+      title: 'Out of office · snooze',
+      desc: 'Auto-reply, not a real signal. Pause the sequence for 14 days, then resume from where it stopped. Sequencer should handle this natively.',
+      tools: ['Sequencer pause'],
+      tip: 'Many sequencers mark OOO as a "reply" by default and stop permanently. Configure to detect and snooze instead.'
+    },
+    'outcome-unsub': {
+      eyebrow: 'Reply outcome',
+      title: 'Negative · unsubscribe',
+      desc: 'Hard no, opt-out, or "stop emailing me." Add immediately to the global suppression list — loops back to Step 7a. CAN-SPAM requires honouring opt-out within 10 business days.',
+      tools: ['Smartlead list', 'HubSpot'],
+      tip: 'Track unsubscribe rate per touch. Above 2% per email means your targeting is wrong, not your copy.'
+    },
+    'feedback': {
+      eyebrow: 'Step 11 · Closed loop',
+      title: 'Weekly retro · refine hypothesis',
+      desc: 'Aggregate open / click / reply / meeting-booked rates by bucket × sector × touch number. Each week, refute or refine the original hypothesis based on what the data shows — this is what turns outbound from "spray and pray" into a learning system.',
+      tools: ['HubSpot', 'Mixpanel', 'Looker Studio', 'Notion retro'],
+      tip: 'If you can\'t name what the hypothesis refined into this week, the loop is broken.'
+    }
+  };
+
+  const svg = document.getElementById('flowSvg');
+  const diagramCard = document.getElementById('diagramCard');
+  const callout = document.getElementById('callout');
+  const tourBtn = document.getElementById('tourBtn');
+  const resetBtn = document.getElementById('resetBtn');
+  const tourStatus = document.getElementById('tourStatus');
+
+  const tourOrder = [
+    'hypothesis','partners','endcustomers','app-analysis','verdict',
+    'identify-targets','enrich','suppression','asset-prep','preflight',
+    'sequence','reply-router','feedback'
+  ];
+
+  let pinnedStage = null;
+  let tourTimer = null;
+  let tourIndex = 0;
+  let tourPlaying = false;
+  let currentStage = null;
+
+  function isNarrow() {
+    return window.matchMedia('(max-width: 900px)').matches;
+  }
+
+  function renderCallout(stageId) {
+    const d = stageData[stageId];
+    if (!d) return;
+    const toolsHtml = d.tools.map(t => `<span class="tname">${t}</span>`).join('');
+    callout.innerHTML = `
+      <span class="c-eyebrow">${d.eyebrow}</span>
+      <h3>${d.title}</h3>
+      <p>${d.desc}</p>
+      <div class="section-label">Tools</div>
+      <div class="callout-tools">${toolsHtml}</div>
+      <div class="tip"><strong>Don't get this wrong:</strong> ${d.tip}</div>
+    `;
+  }
+
+  function positionCallout(stageId) {
+    if (isNarrow()) {
+      // On narrow screens the callout is full-width and lives above the diagram via CSS;
+      // no positioning needed.
+      callout.removeAttribute('style');
+      callout.removeAttribute('data-side');
+      return;
+    }
+
+    const stageEl = svg.querySelector(`[data-stage="${stageId}"]`);
+    if (!stageEl) return;
+    const containerRect = diagramCard.getBoundingClientRect();
+    const stageRect = stageEl.getBoundingClientRect();
+
+    // Measure callout (it must already be in the DOM with content set)
+    const calloutRect = callout.getBoundingClientRect();
+    const cw = calloutRect.width || 320;
+    const ch = calloutRect.height || 280;
+    const pad = 24;
+
+    const sLeft = stageRect.left - containerRect.left;
+    const sRight = stageRect.right - containerRect.left;
+    const sTop = stageRect.top - containerRect.top;
+    const sBottom = stageRect.bottom - containerRect.top;
+    const sCenterX = (sLeft + sRight) / 2;
+    const sCenterY = (sTop + sBottom) / 2;
+
+    const spaceRight = containerRect.width - sRight;
+    const spaceLeft = sLeft;
+    const spaceAbove = sTop;
+    const spaceBelow = containerRect.height - sBottom;
+
+    let left, top, side;
+
+    if (spaceRight >= cw + pad) {
+      side = 'right';        // callout sits to right of stage; arrow on left side of callout
+      left = sRight + pad;
+      top = sCenterY - 60;
+    } else if (spaceLeft >= cw + pad) {
+      side = 'left';
+      left = sLeft - cw - pad;
+      top = sCenterY - 60;
+    } else if (spaceBelow >= ch + pad) {
+      side = 'above';        // callout below stage; arrow on top of callout
+      left = sCenterX - cw / 2;
+      top = sBottom + pad;
+    } else {
+      side = 'below';        // callout above stage; arrow on bottom of callout
+      left = sCenterX - cw / 2;
+      top = sTop - ch - pad;
+    }
+
+    // Clamp to container
+    left = Math.max(pad, Math.min(left, containerRect.width - cw - pad));
+    top = Math.max(pad, Math.min(top, containerRect.height - ch - pad));
+
+    callout.style.left = left + 'px';
+    callout.style.top = top + 'px';
+    callout.setAttribute('data-side', side);
+
+    // Arrow alignment along the side
+    if (side === 'right' || side === 'left') {
+      const arrowY = Math.min(Math.max(sCenterY - top - 6, 14), ch - 20);
+      callout.style.setProperty('--arrow-y', arrowY + 'px');
+    } else {
+      const arrowX = Math.min(Math.max(sCenterX - left, 14), cw - 14);
+      callout.style.setProperty('--arrow-x', arrowX + 'px');
+    }
+  }
+
+  function clearActive() {
+    svg.querySelectorAll('.stage.active').forEach(s => s.classList.remove('active'));
+  }
+
+  function setActive(stageId) {
+    clearActive();
+    const el = svg.querySelector(`[data-stage="${stageId}"]`);
+    if (el) el.classList.add('active');
+    currentStage = stageId;
+    renderCallout(stageId);
+    callout.classList.add('show');
+    // Wait a frame for content to settle, then position
+    requestAnimationFrame(() => positionCallout(stageId));
+  }
+
+  function hideCallout() {
+    callout.classList.remove('show');
+    currentStage = null;
+    // After fade-out, restore hint
+    setTimeout(() => {
+      if (!currentStage) {
+        callout.innerHTML = `
+          <div class="callout-hint">
+            <span class="pulse-dot"></span>
+            Hover or click any numbered stage to see what happens there.
+          </div>
+        `;
+      }
+    }, 200);
+  }
+
+  // Hover: preview the stage's detail
+  svg.addEventListener('mouseover', (e) => {
+    if (tourPlaying) return;
+    const stageEl = e.target.closest('[data-stage]');
+    if (!stageEl) return;
+    setActive(stageEl.dataset.stage);
+  });
+
+  // Mouse leaves the SVG: revert to pinned, or hide
+  svg.addEventListener('mouseleave', () => {
+    if (tourPlaying) return;
+    if (pinnedStage) {
+      setActive(pinnedStage);
+    } else {
+      clearActive();
+      hideCallout();
+    }
+  });
+
+  // Click: pin
+  svg.addEventListener('click', (e) => {
+    const stageEl = e.target.closest('[data-stage]');
+    if (!stageEl) return;
+    if (tourPlaying) stopTour();
+    pinnedStage = stageEl.dataset.stage;
+    setActive(pinnedStage);
+  });
+
+  // Keyboard
+  svg.addEventListener('keydown', (e) => {
+    const stageEl = e.target.closest('[data-stage]');
+    if (!stageEl) return;
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      if (tourPlaying) stopTour();
+      pinnedStage = stageEl.dataset.stage;
+      setActive(pinnedStage);
+    }
+  });
+
+  // Tour
+  function startTour() {
+    tourPlaying = true;
+    tourIndex = 0;
+    tourBtn.classList.add('playing');
+    tourBtn.textContent = '■ Stop tour';
+    tourTick();
+  }
+  function stopTour() {
+    tourPlaying = false;
+    clearTimeout(tourTimer);
+    tourBtn.classList.remove('playing');
+    tourBtn.textContent = '▶ Play tour';
+  }
+  function tourTick() {
+    if (!tourPlaying) return;
+    if (tourIndex >= tourOrder.length) {
+      stopTour();
+      tourStatus.innerHTML = `tour complete · <span class="count">${tourOrder.length}</span> / ${tourOrder.length}`;
+      return;
+    }
+    const stage = tourOrder[tourIndex];
+    setActive(stage);
+    tourStatus.innerHTML = `stage <span class="count">${tourIndex + 1}</span> / ${tourOrder.length}`;
+    const el = svg.querySelector(`[data-stage="${stage}"]`);
+    if (el) {
+      const rect = el.getBoundingClientRect();
+      const viewportH = window.innerHeight;
+      if (rect.top < 120 || rect.bottom > viewportH - 120) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
+    tourIndex++;
+    tourTimer = setTimeout(tourTick, 3200);
+  }
+
+  tourBtn.addEventListener('click', () => {
+    if (tourPlaying) stopTour();
+    else startTour();
+  });
+
+  resetBtn.addEventListener('click', () => {
+    stopTour();
+    clearActive();
+    pinnedStage = null;
+    hideCallout();
+    tourStatus.innerHTML = `stage <span class="count">—</span> / ${tourOrder.length}`;
+  });
+
+  // Reposition on resize / scroll (callout stays anchored)
+  let resizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+      if (currentStage) positionCallout(currentStage);
+    }, 100);
+  });
+
+  tourStatus.innerHTML = `stage <span class="count">—</span> / ${tourOrder.length}`;
+</script>
+
+</body>
+</html>
